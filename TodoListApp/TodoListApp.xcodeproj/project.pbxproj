@@ -34,6 +34,7 @@
 		E43752E4262436140093E80F /* MockJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43752E3262436140093E80F /* MockJSON.swift */; };
 		E437533B26255F160093E80F /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E437533926255F160093E80F /* PopupViewController.swift */; };
 		E437533C26255F160093E80F /* PopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E437533A26255F160093E80F /* PopupViewController.xib */; };
+		E437534726256E900093E80F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E437534626256E900093E80F /* ListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		E43752E3262436140093E80F /* MockJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockJSON.swift; sourceTree = "<group>"; };
 		E437533926255F160093E80F /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		E437533A26255F160093E80F /* PopupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopupViewController.xib; sourceTree = "<group>"; };
+		E437534626256E900093E80F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				E4207A0D261C57210054BCB0 /* BoardViewController.swift */,
+				E437534626256E900093E80F /* ListViewController.swift */,
 				E4207B09261E9F5E0054BCB0 /* TodoViewController.swift */,
 				E4207B0E261EA07E0054BCB0 /* DoingViewController.swift */,
 				E4207B13261EA0850054BCB0 /* DoneViewController.swift */,
@@ -368,6 +371,7 @@
 				E4207B36261F011F0054BCB0 /* ListViewControllerProtocol.swift in Sources */,
 				E43752E4262436140093E80F /* MockJSON.swift in Sources */,
 				E4207AFC261DB55A0054BCB0 /* ListHeaderView.swift in Sources */,
+				E437534726256E900093E80F /* ListViewController.swift in Sources */,
 				E4207B0F261EA07E0054BCB0 /* DoingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
