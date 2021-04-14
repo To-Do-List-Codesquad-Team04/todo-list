@@ -8,50 +8,19 @@
 import UIKit
 import MobileCoreServices
 
-class ListViewController: UIViewController, ListViewControllerProtocol, PopupViewDelegate, UITableViewDragDelegate, UITableViewDropDelegate {
-    
-    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        //
-        let destinationIndexPath = coordinator.destinationIndexPath
-        for dropItem in coordinator.items {
-            if let sourceIndexPath = dropItem.sourceIndexPath {
-                moveCard(at: sourceIndexPath, to: destinationIndexPath!, in: cardTableView)
-                coordinator.drop(dropItem.dragItem, toRowAt: destinationIndexPath!)
-            } else {
-                //print(tableView) // drop이 일어나는 tableView (destination)
-                dropItem.dragItem.itemProvider.loadObject(ofClass: Card.self, completionHandler: { (data, error) in
-                    if let subject = data as? Card {
-                        self.cards.append(subject)
-                        //self.cards.insert(subject, at: destinationIndexPath!.item)
-                        DispatchQueue.main.async {
-                            self.refreshTableView()
-                        }
-                    }
-                })
-            }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        let card = cards[indexPath.section]
-        let itemProvider = NSItemProvider(object: card)
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        return [dragItem]
-    }
-    
+class ListViewController: UIViewController, ListViewControllerProtocol, PopupViewDelegate {
     @IBOutlet weak var headerView: ListHeaderView!
     @IBOutlet weak var cardTableView: UITableView!
-    var cards: [Card] = []
+    private var cardsDataSource = CardsDataSource(cards: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
         headerView.title = self.title
-        headerView.badgeButton.setTitle("\(cards.count)", for: .normal)
+        headerView.badgeButton.setTitle("\(cardsDataSource.cardsCount)", for: .normal)
         headerView.badgeButton.layer.masksToBounds = true
         headerView.badgeButton.layer.cornerRadius = headerView.frame.size.height / 2
         
-        cardTableView.dataSource = self
-        cardTableView.delegate  = self
+        cardTableView.dataSource = cardsDataSource
         cardTableView.register(CardCell.nib(), forCellReuseIdentifier: CardCell.identifier)
         cardTableView.sectionFooterHeight = 0.0
         
@@ -59,18 +28,20 @@ class ListViewController: UIViewController, ListViewControllerProtocol, PopupVie
         
         cardTableView.dragDelegate = self
         cardTableView.dropDelegate = self
-        cardTableView.dragInteractionEnabled = true
     }
     
     func filterCards(of category: String, from allCards: [Card]) {
-        cards = allCards.filter { card in
-            card.category == category
-        }
+        allCards.filter { card in card.category == category }
+        .enumerated().forEach { index, card in cardsDataSource.addCard(card, at: index) }
     }
     
     func refreshTableView() {
         cardTableView.reloadData()
-        headerView.badgeButton.setTitle("\(cards.count)", for: .normal)
+        //headerView.badgeButton.setTitle("\(cards.count)", for: .normal)
+    }
+    
+    func updateBadgeCount() {
+        headerView.badgeButton.setTitle("\(cardsDataSource.cardsCount)", for: .normal)
     }
     
     @objc func showPopupViewController() {
@@ -82,8 +53,9 @@ class ListViewController: UIViewController, ListViewControllerProtocol, PopupVie
         self.present(popupVC, animated: true, completion: nil)
     }
     
-    func registerButtonPressed(title: String, description: String) {
-        cards.append(Card(title: title, description: description, category: cards.first?.category ?? ""))
+    func registerButtonPressed(title: String, notes: String) {
+        //cards.append(Card(title: title, description: description, category: cards.first?.category ?? ""))
+        cardsDataSource.register(title: title, notes: notes)
         refreshTableView()
     }
     
@@ -92,46 +64,84 @@ class ListViewController: UIViewController, ListViewControllerProtocol, PopupVie
     }
 }
 
-extension ListViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return cards.count
-    }
+//MARK: - UITableViewDragDelegate, UITableViewDropDelegate
+
+extension ListViewController: UITableViewDragDelegate, UITableViewDropDelegate {
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 16.0
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell  = tableView.dequeueReusableCell(withIdentifier: CardCell.identifier, for: indexPath) as! CardCell
-        DispatchQueue.main.async {
-            cell.titleLabel.text = self.cards[indexPath.section].title
-            cell.descriptionLabel.text = self.cards[indexPath.section].description
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        let dataSource = cardsDataSource
+        let destinationIndexPath: IndexPath
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            destinationIndexPath = IndexPath(item: 0, section: tableView.numberOfSections)
         }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (action, view, success) in
-            self.cards.remove(at: indexPath.section)
-            self.refreshTableView()
+        let item = coordinator.items[0]
+        
+        guard let dragCoordinator = coordinator.session.localDragSession?.localContext as? CacheDragCoordinator else { return }
+        if let sourceIndexPath = item.sourceIndexPath {
+            dragCoordinator.isReordering = true
+            tableView.performBatchUpdates({
+                dataSource.moveCard(at: sourceIndexPath.section, to: destinationIndexPath.section)
+                tableView.deleteSections(NSIndexSet(index: sourceIndexPath.section) as IndexSet, with: .automatic)
+                tableView.insertSections(NSIndexSet(index: destinationIndexPath.section) as IndexSet, with: .automatic)
+            }, completion: nil)
+        } else {
+            dragCoordinator.isReordering = false
+            
+            if let card = item.dragItem.localObject as? Card {
+                tableView.performBatchUpdates({
+                    dataSource.addCard(card, at: destinationIndexPath.section)
+                    tableView.insertSections(NSIndexSet(index: destinationIndexPath.section) as IndexSet, with: .automatic)
+                }, completion: nil)
+            } else {
+                let itemProvider = item.dragItem.itemProvider
+                itemProvider.loadObject(ofClass: Card.self, completionHandler: { (data, error) in
+                    if let card = data as? Card {
+                        dataSource.addCard(card, at: destinationIndexPath.section)
+                        DispatchQueue.main.async {
+                            tableView.insertSections(NSIndexSet(index: destinationIndexPath.section) as IndexSet, with: .automatic)
+                        }
+                    }
+                })
+            }
         }
-        let config = UISwipeActionsConfiguration(actions: [deleteAction])
-        config.performsFirstActionWithFullSwipe = false
-        return config
+        dragCoordinator.dragCompleted = true
+        updateBadgeCount()
+        coordinator.drop(item.dragItem, toRowAt: destinationIndexPath)
     }
     
-    func moveCard(at sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, in tableView: UITableView) {
-        tableView.performBatchUpdates({ () -> Void in
-            let card = cards[sourceIndexPath.section]
-            cards.remove(at: sourceIndexPath.section)
-            cards.insert(card, at: destinationIndexPath.section)
-            //refreshTableView()
-            cardTableView.deleteRows(at: [sourceIndexPath], with: .automatic)
-            cardTableView.insertRows(at: [destinationIndexPath], with: .automatic)
+    
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let dataSource = cardsDataSource
+        let dragCoordinator = CacheDragCoordinator(sourceIndexPath: indexPath)
+        session.localContext = dragCoordinator
+        return dataSource.dragItems(for: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, dragSessionDidEnd session: UIDragSession) {
+        guard let dragCoordinator = session.localContext as? CacheDragCoordinator,
+              dragCoordinator.dragCompleted == true,
+              dragCoordinator.isReordering == false else {
+            return
+        }
+        let dataSource = cardsDataSource
+        let sourceIndexPath = dragCoordinator.sourceIndexPath
+        tableView.performBatchUpdates({
+            dataSource.deleteCard(at: sourceIndexPath.section)
+            tableView.deleteSections(NSIndexSet(index: sourceIndexPath.section) as IndexSet, with: .automatic)
         }, completion: nil)
+        updateBadgeCount()
+    }
+    
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        guard session.items.count == 1 else {
+            return UITableViewDropProposal(operation: .cancel)
+        }
+        if tableView.hasActiveDrag {
+            return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        } else {
+            return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+        }
     }
 }

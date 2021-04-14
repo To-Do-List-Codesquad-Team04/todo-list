@@ -8,7 +8,6 @@
 import UIKit
 
 class CardCell: UITableViewCell {
-    //@IBOutlet weak var cardBackgroundView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     

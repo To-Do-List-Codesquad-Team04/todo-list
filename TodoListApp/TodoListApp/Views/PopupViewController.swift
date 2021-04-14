@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PopupViewDelegate {
-    func registerButtonPressed(title: String, description: String)
+    func registerButtonPressed(title: String, notes: String)
 }
 
 class PopupViewController: UIViewController {
@@ -30,7 +30,7 @@ class PopupViewController: UIViewController {
     }
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-        delegate?.registerButtonPressed(title: titleTextField.text ?? "", description: descriptionTextField.text ?? "")
+        delegate?.registerButtonPressed(title: titleTextField.text ?? "", notes: descriptionTextField.text ?? "")
         dismiss(animated: true, completion: nil)
     }
     

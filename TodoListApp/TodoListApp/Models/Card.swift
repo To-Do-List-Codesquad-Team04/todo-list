@@ -8,10 +8,12 @@
 import Foundation
 import MobileCoreServices
 
-final class Card: NSObject,
-            NSItemProviderWriting,
-            NSItemProviderReading,
-            Codable {
+final class Card: NSObject, NSItemProviderWriting, NSItemProviderReading, Codable {
+    var title: String
+    var notes: String
+    let createdAt: Date
+    let category: String
+    
     //This function actually has a return type of Self, but that really messes things up when you are trying to return your object, so if you mark your class as final as I've done above, the you can change the return type to return your class type.
     static func object(withItemProviderData data: Data, typeIdentifier: String) throws -> Card {
         let decoder = JSONDecoder()
@@ -24,14 +26,9 @@ final class Card: NSObject,
         }
     }
     
-    var title: String
-    var desc: String
-    let createdAt: Date
-    let category: String
-    
-    init(title: String, description: String, category: String) {
+    init(title: String, notes: String, category: String) {
         self.title = title
-        self.desc = description
+        self.notes = notes
         self.createdAt = Date()
         self.category = category
     }
@@ -61,7 +58,7 @@ final class Card: NSObject,
         title = newTitle
     }
     
-    func replaceDescription(with newDescription: String) {
-        desc = newDescription
+    func replaceNotes(with newNotes: String) {
+        notes = newNotes
     }
 }
