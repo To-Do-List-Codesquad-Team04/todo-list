@@ -19,7 +19,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	runtimeOnly 'com.h2database:h2:1.4.192'
+	runtimeOnly 'mysql:mysql-connector-java'
 	compile 'pl.allegro.tech.boot:handlebars-spring-boot-starter:0.3.2'
 }
 
