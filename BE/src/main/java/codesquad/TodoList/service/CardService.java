@@ -4,6 +4,7 @@ import codesquad.TodoList.domain.Card;
 import codesquad.TodoList.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,24 +18,25 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
+    @Transactional
     public void create(Card card) {
         cardRepository.save(card);
     }
 
     public List<Card> read() {
-        return cardRepository.findByStatusIsNot(Card.Status.DELETED);
+        return cardRepository.findByStatusIsNotDeleted();
     }
 
+    @Transactional
     public void edit(Long id, Card newCard) {
         Card card = getCardById(id);
         card.update(newCard);
-        cardRepository.save(card);
     }
 
+    @Transactional
     public void delete(Long id) {
         Card card = getCardById(id);
         card.setStatus(Card.Status.DELETED);
-        cardRepository.save(card);
     }
 
     public Card getCardById(Long id) {

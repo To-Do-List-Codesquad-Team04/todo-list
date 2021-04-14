@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 public class Card {
 
     public enum Status {
@@ -22,10 +21,8 @@ public class Card {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 500)
     private String title;
 
     private String contents;
