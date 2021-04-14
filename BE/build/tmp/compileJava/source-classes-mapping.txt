@@ -4,6 +4,7 @@ codesquad/TodoList/service/CardService.java
  codesquad.TodoList.service.CardService
 codesquad/TodoList/domain/Card.java
  codesquad.TodoList.domain.Card
+ codesquad.TodoList.domain.Card$Status
 codesquad/TodoList/controller/CardController.java
  codesquad.TodoList.controller.CardController
 codesquad/TodoList/controller/HomeController.java
