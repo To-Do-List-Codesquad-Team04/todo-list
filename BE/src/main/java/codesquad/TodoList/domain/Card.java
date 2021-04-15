@@ -1,5 +1,6 @@
 package codesquad.TodoList.domain;
 
+import codesquad.TodoList.Dto.CardDto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
@@ -28,14 +29,29 @@ public class Card {
     private String contents;
 
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private LocalDateTime datetime;
 
     private Status status;
 
-    public void update(Card card) {
-        this.title = card.title;
-        this.contents = card.contents;
-        this.status = card.status;
+    public Card() {
+
+    }
+
+    public Card(CardDto cardDto) {
+        this.title = cardDto.getTitle();
+        this.contents = cardDto.getContents();
+        this.status = cardDto.getStatus();
+        this.datetime = LocalDateTime.now();
+    }
+
+    public void update(CardDto updateCardDto) {
+        this.title = updateCardDto.getTitle();
+        this.contents = updateCardDto.getContents();
+        this.status = updateCardDto.getStatus();
+    }
+
+    public void delete() {
+        this.status = Status.deleted;
     }
 
     public Long getId() {
@@ -46,32 +62,16 @@ public class Card {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContents() {
         return contents;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
     public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime createDate) {
-        this.dateTime = createDate;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
+        return datetime;
     }
 
     public Status getStatus() {
-        return this.status;
+        return status;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Card {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + datetime +
                 ", status=" + status +
                 '}';
     }
