@@ -1,4 +1,6 @@
-package codesquad.TodoList.domain;
+package codesquad.TodoList.Dto;
+
+import codesquad.TodoList.domain.Card;
 
 import java.util.ArrayList;
 import java.util.List;
