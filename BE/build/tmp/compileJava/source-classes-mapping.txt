@@ -1,11 +1,7 @@
 codesquad/TodoList/TodoListApplication.java
  codesquad.TodoList.TodoListApplication
-codesquad/TodoList/controller/HomeController.java
- codesquad.TodoList.controller.HomeController
 codesquad/TodoList/repository/CardRepository.java
  codesquad.TodoList.repository.CardRepository
-codesquad/TodoList/TodoListApplication.java
- codesquad.TodoList.TodoListApplication
 codesquad/TodoList/Dto/CardDto.java
  codesquad.TodoList.Dto.CardDto
 codesquad/TodoList/service/CardService.java
