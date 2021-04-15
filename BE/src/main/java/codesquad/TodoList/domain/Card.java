@@ -2,9 +2,7 @@ package codesquad.TodoList.domain;
 
 import codesquad.TodoList.Dto.CardDto;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
-
 import java.time.LocalDateTime;
 
 public class Card {
@@ -28,7 +26,6 @@ public class Card {
 
     private String contents;
 
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime datetime;
 
     private Status status;
