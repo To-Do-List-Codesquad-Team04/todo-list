@@ -1,7 +1,8 @@
 package codesquad.TodoList.service;
 
 import codesquad.TodoList.domain.Card;
-import codesquad.TodoList.domain.CardList;
+import codesquad.TodoList.Dto.CardDto;
+import codesquad.TodoList.Dto.CardList;
 import codesquad.TodoList.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class CardService {
     }
 
     @Transactional
-    public void create(Card card) {
+    public void create(CardDto cardDto) {
+        Card card = new Card(cardDto);
         cardRepository.save(card);
     }
 
@@ -28,15 +30,17 @@ public class CardService {
     }
 
     @Transactional
-    public void edit(Long id, Card newCard) {
+    public void edit(Long id, CardDto newCard) {
         Card card = getCardById(id);
         card.update(newCard);
+        cardRepository.save(card);
     }
 
     @Transactional
     public void delete(Long id) {
         Card card = getCardById(id);
-        card.setStatus(Card.Status.deleted);
+        card.delete();
+        cardRepository.save(card);
     }
 
     public Card getCardById(Long id) {
