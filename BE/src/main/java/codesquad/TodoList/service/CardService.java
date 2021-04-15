@@ -1,12 +1,11 @@
 package codesquad.TodoList.service;
 
 import codesquad.TodoList.domain.Card;
+import codesquad.TodoList.domain.CardList;
 import codesquad.TodoList.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class CardService {
@@ -23,8 +22,9 @@ public class CardService {
         cardRepository.save(card);
     }
 
-    public List<Card> read() {
-        return cardRepository.findByStatusIsNotDeleted();
+    public CardList read() {
+        CardList cardList = new CardList(cardRepository.findByStatusIsNotDeleted());
+        return cardList;
     }
 
     @Transactional
@@ -36,7 +36,7 @@ public class CardService {
     @Transactional
     public void delete(Long id) {
         Card card = getCardById(id);
-        card.setStatus(Card.Status.DELETED);
+        card.setStatus(Card.Status.deleted);
     }
 
     public Card getCardById(Long id) {
