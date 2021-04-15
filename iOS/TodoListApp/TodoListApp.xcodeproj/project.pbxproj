@@ -34,6 +34,7 @@
 		E43753862627087D0093E80F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43753852627087D0093E80F /* ListViewController.swift */; };
 		E437538E26270C210093E80F /* CardsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E437538D26270C210093E80F /* CardsDataSource.swift */; };
 		E43753BF26271F000093E80F /* CacheDragCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43753BE26271F000093E80F /* CacheDragCoordinator.swift */; };
+		E43753CD2628219C0093E80F /* CardsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43753CC2628219C0093E80F /* CardsData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,7 @@
 		E43753852627087D0093E80F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		E437538D26270C210093E80F /* CardsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsDataSource.swift; sourceTree = "<group>"; };
 		E43753BE26271F000093E80F /* CacheDragCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheDragCoordinator.swift; sourceTree = "<group>"; };
+		E43753CC2628219C0093E80F /* CardsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 				E4207A8E261C7B380054BCB0 /* ActivityFeed.swift */,
 				E4207A93261C7B740054BCB0 /* JSONParser.swift */,
 				E4207A98261C7C0C0054BCB0 /* NetworkManager.swift */,
+				E43753CC2628219C0093E80F /* CardsData.swift */,
 				E4207B25261EB7EA0054BCB0 /* TodoData.swift */,
 				E437538D26270C210093E80F /* CardsDataSource.swift */,
 				E43753BE26271F000093E80F /* CacheDragCoordinator.swift */,
@@ -363,6 +366,7 @@
 				E4207B26261EB7EA0054BCB0 /* TodoData.swift in Sources */,
 				E4207A0C261C57210054BCB0 /* SceneDelegate.swift in Sources */,
 				E4207A69261C788A0054BCB0 /* Card.swift in Sources */,
+				E43753CD2628219C0093E80F /* CardsData.swift in Sources */,
 				E4207A8F261C7B380054BCB0 /* ActivityFeed.swift in Sources */,
 				E4207A85261C7ABA0054BCB0 /* List.swift in Sources */,
 				E4207B36261F011F0054BCB0 /* ListViewControllerProtocol.swift in Sources */,
