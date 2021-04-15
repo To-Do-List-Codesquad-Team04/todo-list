@@ -10,6 +10,7 @@ import UIKit
 class ListViewController: UIViewController, ListViewControllerProtocol, PopupViewDelegate, UITableViewDelegate {
     @IBOutlet weak var headerView: ListHeaderView!
     @IBOutlet weak var cardTableView: UITableView!
+    private let networkManager = NetworkManager()
     private var cardsDataSource = CardsDataSource(cards: [])
     
     override func viewDidLoad() {
@@ -35,16 +36,23 @@ class ListViewController: UIViewController, ListViewControllerProtocol, PopupVie
             .enumerated().forEach { index, card in cardsDataSource.insert(card, at: index) }
     }
     
+    func updateCards(with cards: [Card]) {
+        cards.enumerated().forEach { index, card in
+            cardsDataSource.insert(card, at: index)
+        }
+    }
+    
     func updateViewControllerTitle(with listName: String) {
         self.title = listName
     }
     
     func refreshTableView() {
         cardTableView.reloadData()
+        updateBadgeCount()
     }
     
     func registerButtonPressed(title: String, notes: String) {
-        cardsDataSource.registerCard(title: title, notes: notes)
+        //cardsDataSource.registerCard(title: title, notes: notes)
         refreshTableView()
         updateBadgeCount()
     }
@@ -64,6 +72,8 @@ class ListViewController: UIViewController, ListViewControllerProtocol, PopupVie
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (action, view, success) in
+            let urlString = "http://13.125.136.48:8080/cards/\(self.cardsDataSource.cards[indexPath.section].id)"
+            self.networkManager.performRequest(urlString: urlString, httpMethod: "DELETE")
             self.cardsDataSource.deleteCard(at: indexPath.section)
             tableView.deleteSections(NSIndexSet(index: indexPath.section) as IndexSet, with: .automatic)
             self.updateBadgeCount()
