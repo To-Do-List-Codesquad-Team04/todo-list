@@ -12,17 +12,21 @@ public class CardList {
 
     public CardList(List<Card> cards) {
         for(Card card : cards) {
-            switch (card.getStatus()) {
-                case todo:
-                    todo.add(card);
-                    break;
-                case doing:
-                    doing.add(card);
-                    break;
-                case done:
-                    done.add(card);
-                    break;
-            }
+            screenStatus(card);
+        }
+    }
+
+    private void screenStatus(Card card) {
+        switch (card.getStatus()) {
+            case todo:
+                todo.add(card);
+                break;
+            case doing:
+                doing.add(card);
+                break;
+            case done:
+                done.add(card);
+                break;
         }
     }
 
