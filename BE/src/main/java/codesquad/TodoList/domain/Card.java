@@ -2,29 +2,27 @@ package codesquad.TodoList.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 public class Card {
 
     public enum Status {
-        DELETED,
-        TODO,
-        DOING,
-        DONE;
+        deleted,
+        todo,
+        doing,
+        done;
 
         @JsonCreator
         public static Status from(String s) {
-            return Status.valueOf(s.toUpperCase());
+            return Status.valueOf(s.toLowerCase());
         }
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 500)
     private String title;
 
     private String contents;
@@ -83,6 +81,7 @@ public class Card {
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", dateTime=" + dateTime +
+                ", status=" + status +
                 '}';
     }
 }
