@@ -2,13 +2,15 @@ codesquad/TodoList/repository/CardRepository.java
  codesquad.TodoList.repository.CardRepository
 codesquad/TodoList/TodoListApplication.java
  codesquad.TodoList.TodoListApplication
+codesquad/TodoList/Dto/CardDto.java
+ codesquad.TodoList.Dto.CardDto
+codesquad/TodoList/service/CardService.java
+ codesquad.TodoList.service.CardService
+codesquad/TodoList/Dto/CardList.java
+ codesquad.TodoList.Dto.CardList
+ codesquad.TodoList.Dto.CardList$1
 codesquad/TodoList/domain/Card.java
  codesquad.TodoList.domain.Card
  codesquad.TodoList.domain.Card$Status
-codesquad/TodoList/domain/CardList.java
- codesquad.TodoList.domain.CardList
- codesquad.TodoList.domain.CardList$1
-codesquad/TodoList/service/CardService.java
- codesquad.TodoList.service.CardService
 codesquad/TodoList/controller/CardController.java
  codesquad.TodoList.controller.CardController
