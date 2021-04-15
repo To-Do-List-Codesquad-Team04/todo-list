@@ -12,8 +12,8 @@ struct MockJSON {
     [
         {
             "id": 1,
-            "title": "Test Card 1",
-            "contents": "This is a test card",
+            "title": "GitHub 공부하기",
+            "contents": "add, commit, push",
             "createDate": "2021-04-10 12:00:00",
             "todo": true,
             "doing": false,
@@ -21,8 +21,8 @@ struct MockJSON {
         },
         {
             "id": 2,
-            "title": "Test Card 2",
-            "contents": "This is a test card",
+            "title": "HTML/CSS 공부하기",
+            "contents": "* GitHub 공부내용\\n* 모던 자바스크립트 1장 공부내용",
             "createDate": "2021-04-11 12:00:00",
             "todo": false,
             "doing": true,
@@ -30,8 +30,8 @@ struct MockJSON {
         },
         {
             "id": 3,
-            "title": "Test Card 3",
-            "contents": "This is a test card",
+            "title": "블로그에 포스팅할 것",
+            "contents": "input 태그 실습",
             "createDate": "2021-04-12 12:00:00",
             "todo": true,
             "doing": false,
