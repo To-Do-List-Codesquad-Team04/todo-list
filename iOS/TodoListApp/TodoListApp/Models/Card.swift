@@ -9,12 +9,14 @@ import Foundation
 import MobileCoreServices
 
 final class Card: NSObject, NSItemProviderWriting, NSItemProviderReading, Codable {
+    let id: Int
     var title: String
     var notes: String
     let createdAt: Date
     let category: String
     
-    init(title: String, notes: String, category: String) {
+    init(id: Int, title: String, notes: String, category: String) {
+        self.id = id
         self.title = title
         self.notes = notes
         self.createdAt = Date()
